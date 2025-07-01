@@ -11,7 +11,7 @@ const App = () => {
   const [message, setMessage] = useState('');
   const [bookedSlots, setBookedSlots] = useState([]);
 
-  const GOOGLE_SCRIPT_WEB_APP_URL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL';
+  const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec';
 
   useEffect(() => {
     const fetchBookedSlots = async () => {
