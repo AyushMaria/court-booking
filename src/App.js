@@ -15,18 +15,18 @@ const App = () => {
   const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec';
 
   useEffect(() => {
-    const fetchBookedSlots = async () => {
-      if (!date) return;
-      try {
-        const response = await fetch(`${GOOGLE_SCRIPT_WEB_APP_URL}?date=${date}`);
-        const data = await response.json();
-        setBookedSlots(data.bookedSlots || []);
-      } catch (error) {
-        console.error('Failed to fetch booked slots', error);
-      }
-    };
-    fetchBookedSlots();
+    if (date) fetchBookedSlots(date);
   }, [date]);
+
+  const fetchBookedSlots = async (dateToCheck) => {
+    try {
+      const response = await fetch(`${GOOGLE_SCRIPT_WEB_APP_URL}?date=${dateToCheck}`);
+      const data = await response.json();
+      setBookedSlots(data.bookedSlots || []);
+    } catch (error) {
+      console.error('Failed to fetch booked slots', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +46,10 @@ const App = () => {
       setName('');
       setPhone('');
       setEmail('');
+
+      // 🔄 Refresh booked slots after submission
+      if (date) fetchBookedSlots(date);
+
     } catch (error) {
       setMessage('❌ Booking failed. Please try again.');
     }
