@@ -11,19 +11,20 @@ const App = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [bookedSlots, setBookedSlots] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec';
 
   useEffect(() => {
-    setTimeout(() => {
-  	if (date) fetchBookedSlots(date);
-	}, 1000); // wait 1 second before fetching
+    if (date) fetchBookedSlots(date);
   }, [date]);
 
   const fetchBookedSlots = async (dateToCheck) => {
     try {
       const response = await fetch(`${GOOGLE_SCRIPT_WEB_APP_URL}?date=${dateToCheck}`);
       const data = await response.json();
+      console.log('Fetched slots:', data.bookedSlots);
       setBookedSlots(data.bookedSlots || []);
     } catch (error) {
       console.error('Failed to fetch booked slots', error);
@@ -32,6 +33,8 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setDisabled(true);
     const payload = { date, timeSlot, name, phone, email };
 
     try {
@@ -49,11 +52,16 @@ const App = () => {
       setPhone('');
       setEmail('');
 
-      // 🔄 Refresh booked slots after submission
-      if (date) fetchBookedSlots(date);
+      setTimeout(() => {
+        if (date) fetchBookedSlots(date);
+        setLoading(false);
+        setDisabled(false);
+      }, 1500);
 
     } catch (error) {
       setMessage('❌ Booking failed. Please try again.');
+      setLoading(false);
+      setDisabled(false);
     }
   };
 
@@ -97,6 +105,7 @@ const App = () => {
             onChange={e => setDate(e.target.value)}
             required
             className="responsive-input"
+            disabled={disabled}
           />
 
           <h2 className="section-heading">Step 2: Select Time Slot</h2>
@@ -106,6 +115,7 @@ const App = () => {
             onChange={e => setTimeSlot(e.target.value)}
             required
             className="responsive-input"
+            disabled={disabled}
           >
             <option value="">Select Time Slot</option>
             <optgroup label="Morning (7 AM - 1 PM)">
@@ -128,6 +138,7 @@ const App = () => {
             onChange={e => setName(e.target.value)}
             required
             className="responsive-input"
+            disabled={disabled}
           />
 
           <input
@@ -138,6 +149,7 @@ const App = () => {
             onChange={e => setPhone(e.target.value)}
             required
             className="responsive-input"
+            disabled={disabled}
           />
 
           <input
@@ -148,9 +160,12 @@ const App = () => {
             onChange={e => setEmail(e.target.value)}
             required
             className="responsive-input"
+            disabled={disabled}
           />
 
-          <button type="submit" className="submit-button">📩 Book Slot</button>
+          <button type="submit" className="submit-button" disabled={disabled}>
+            {loading ? '⏳ Booking...' : '📩 Book Slot'}
+          </button>
         </form>
 
         {message && <p className="message">{message}</p>}
