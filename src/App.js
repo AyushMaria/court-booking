@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import './App.css';
 import './styles.css';
@@ -14,20 +15,20 @@ const App = () => {
     const payload = { date, timeSlot, name, phone };
 
     try {
-      await fetch('https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec', {
+      await fetch('YOUR_GOOGLE_SCRIPT_WEB_APP_URL', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      setMessage('✅ Booking submitted!');
+      setMessage('✅ Booking submitted! If your slot was available.');
       setDate('');
       setTimeSlot('');
       setName('');
       setPhone('');
     } catch (error) {
-      setMessage('❌ Failed to submit booking.');
+      setMessage('❌ Booking failed. Please try again.');
     }
   };
 
@@ -55,7 +56,7 @@ const App = () => {
   return (
     <div className="App">
       <div className="booking-container">
-        <h1 className="title">Vibe&Volley</h1>
+        <h1 className="title">Vibe&amp;Volley</h1>
         <p className="subtitle">🎾 Reserve your court slot below. Quick, easy, and free!</p>
 
         <form onSubmit={handleSubmit} className="booking-form">
