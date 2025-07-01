@@ -14,7 +14,7 @@ const App = () => {
     const payload = { date, timeSlot, name, phone };
 
     try {
-      await fetch('YOUR_GOOGLE_SCRIPT_WEB_APP_URL', {
+      await fetch('https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
