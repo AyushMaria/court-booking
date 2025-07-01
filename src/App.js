@@ -15,7 +15,9 @@ const App = () => {
   const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwD_hlznCQvY51gysQtnMyRfe-EDK-16tlHvJ2Ogwj3quglrDKDHitBVPwRt-oIt4G4/exec';
 
   useEffect(() => {
-    if (date) fetchBookedSlots(date);
+    setTimeout(() => {
+  	if (date) fetchBookedSlots(date);
+	}, 1000); // wait 1 second before fetching
   }, [date]);
 
   const fetchBookedSlots = async (dateToCheck) => {
