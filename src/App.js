@@ -8,6 +8,7 @@ const App = () => {
   const [timeSlot, setTimeSlot] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [bookedSlots, setBookedSlots] = useState([]);
 
@@ -29,7 +30,7 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { date, timeSlot, name, phone };
+    const payload = { date, timeSlot, name, phone, email };
 
     try {
       await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
@@ -44,6 +45,7 @@ const App = () => {
       setTimeSlot('');
       setName('');
       setPhone('');
+      setEmail('');
     } catch (error) {
       setMessage('❌ Booking failed. Please try again.');
     }
@@ -128,6 +130,16 @@ const App = () => {
             placeholder="Phone Number"
             value={phone}
             onChange={e => setPhone(e.target.value)}
+            required
+            className="responsive-input"
+          />
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             required
             className="responsive-input"
           />
